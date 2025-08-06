@@ -187,7 +187,7 @@ class ImageAnnotationTool {
         // Add label
         const label = document.createElement('div');
         label.className = 'box-label';
-        label.textContent = `${index}: ${boxData.content || 'No content'}`;
+        label.textContent = `${index}`;
         boxElement.appendChild(label);
         
         // Add resize handles
@@ -408,7 +408,7 @@ class ImageAnnotationTool {
             if (property === 'content') {
                 const boxElement = this.boundingBoxesContainer.children[this.selectedBoxIndex];
                 const label = boxElement.querySelector('.box-label');
-                label.textContent = `${this.selectedBoxIndex}: ${value || 'No content'}`;
+                label.textContent = `${this.selectedBoxIndex}`;
             }
         }
     }
@@ -492,7 +492,7 @@ class ImageAnnotationTool {
             ctx.strokeRect(x, y, width, height);
             
             // Draw label
-            const label = `${index}: ${box.content || 'No content'}`;
+            const label = `${index}`;
             ctx.fillStyle = '#e74c3c';
             ctx.fillRect(x, y - 20, ctx.measureText(label).width + 10, 20);
             ctx.fillStyle = 'white';
