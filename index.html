@@ -37,14 +37,16 @@
             
             <!-- Right Panel - JSON Editor -->
             <div class="right-panel">
-                <div class="json-upload-area">
-                    <input type="file" id="jsonInput" accept=".json" style="display: none;">
-                    <button id="jsonUploadBtn" class="btn btn-secondary">Upload JSON File</button>
-                    <button id="createNewBtn" class="btn btn-secondary">Add New Box</button>
-                </div>
-                <div class="json-editor-container">
-                    <h3>JSON Data</h3>
-                    <textarea id="jsonEditor" placeholder="JSON data will appear here..."></textarea>
+                <div class="json-upload-area-container">
+                    <div class="json-upload-area">
+                        <input type="file" id="jsonInput" accept=".json" style="display: none;">
+                        <button id="jsonUploadBtn" class="btn btn-secondary">Upload JSON File</button>
+                        <button id="createNewBtn" class="btn btn-secondary">Add New Box</button>
+                    </div>
+                    <div class="json-editor-container">
+                        <h3>JSON Data</h3>
+                        <textarea id="jsonEditor" placeholder="JSON data will appear here..."></textarea>
+                    </div>
                 </div>
                 <div class="bbox-info">
                     <h3>Selected Box Info</h3>

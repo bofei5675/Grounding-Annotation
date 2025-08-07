@@ -270,7 +270,7 @@ header h1 {
     border-top: 1px solid #e0e0e0;
     padding-top: 20px;
     flex-shrink: 0; /* Prevent this section from shrinking */
-    margin-top: 20px; /* Add some space from the JSON editor */
+    margin-top: 0; /* Add some space from the JSON editor */
 }
 
 .bbox-info h3 {
