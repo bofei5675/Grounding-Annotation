@@ -74,6 +74,9 @@ class ImageAnnotationTool {
         // Global mouse events for dragging and resizing
         document.addEventListener('mousemove', (e) => this.handleMouseMove(e));
         document.addEventListener('mouseup', () => this.handleMouseUp());
+        
+        // Keyboard events
+        document.addEventListener('keydown', (e) => this.handleKeyDown(e));
     }
     
     handleImageUpload(event) {
@@ -115,8 +118,10 @@ class ImageAnnotationTool {
         // Calculate scale for coordinate conversion
         this.imageScale = this.imageCanvas.offsetWidth / this.currentImage.width;
         
-        // Render existing bounding boxes
-        this.renderBoundingBoxes();
+        // Use setTimeout to ensure DOM is updated before rendering boxes
+        setTimeout(() => {
+            this.renderBoundingBoxes();
+        }, 0);
     }
     
     handleJsonUpload(event) {
@@ -137,10 +142,16 @@ class ImageAnnotationTool {
     }
     
     createNewJsonData() {
-        this.jsonData = [];
-        this.updateJsonEditor();
-        this.renderBoundingBoxes();
-        this.clearSelectedBox();
+        if (!this.currentImage) {
+            // If no image, just create empty JSON data
+            this.jsonData = [];
+            this.updateJsonEditor();
+            this.renderBoundingBoxes();
+            this.clearSelectedBox();
+        } else {
+            // If image exists, create a new bounding box in the center
+            this.addNewBoundingBox();
+        }
     }
     
     handleJsonEdit() {
@@ -162,6 +173,13 @@ class ImageAnnotationTool {
         
         // Clear existing boxes
         this.boundingBoxesContainer.innerHTML = '';
+        
+        // Ensure canvas dimensions are properly set
+        if (this.imageCanvas.offsetWidth === 0 || this.imageCanvas.offsetHeight === 0) {
+            // Canvas not ready yet, try again in next frame
+            requestAnimationFrame(() => this.renderBoundingBoxes());
+            return;
+        }
         
         this.jsonData.forEach((box, index) => {
             this.createBoundingBoxElement(box, index);
@@ -187,7 +205,8 @@ class ImageAnnotationTool {
         // Add label
         const label = document.createElement('div');
         label.className = 'box-label';
-        label.textContent = `${index}`;
+        const content = boxData.content || `Box ${index}`;
+        label.textContent = content.length > 15 ? content.substring(0, 15) + '...' : content;
         boxElement.appendChild(label);
         
         // Add resize handles
@@ -259,6 +278,18 @@ class ImageAnnotationTool {
         this.isDragging = false;
         this.isResizing = false;
         this.resizeHandle = null;
+    }
+    
+    handleKeyDown(event) {
+        // Delete key or Backspace to delete selected box
+        if ((event.key === 'Delete' || event.key === 'Backspace') && this.selectedBoxIndex !== null) {
+            // Don't delete if user is typing in an input field
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+                return;
+            }
+            event.preventDefault();
+            this.deleteSelectedBox();
+        }
     }
     
     moveBoundingBox(boxElement, boxData, deltaX, deltaY) {
@@ -361,9 +392,53 @@ class ImageAnnotationTool {
             this.selectedBoxIndex = index;
             this.boundingBoxesContainer.children[index].classList.add('selected');
             this.showBoxInfo(this.jsonData[index], index);
+            this.scrollToJsonObject(index);
         } else {
             this.clearSelectedBox();
         }
+    }
+    
+    scrollToJsonObject(index) {
+        const jsonText = this.jsonEditor.value;
+        const lines = jsonText.split('\n');
+        let targetLine = 0;
+        let objectCount = 0;
+        
+        // Find the line where the target object starts
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            // Look for object start (either first object or object after comma)
+            if (line === '{' || line.endsWith(',')) {
+                if (line === '{' && objectCount === index) {
+                    targetLine = i;
+                    break;
+                }
+                if (line === '{') {
+                    objectCount++;
+                }
+            }
+        }
+        
+        // Calculate the position to scroll to
+        const lineHeight = 20; // Approximate line height
+        const scrollPosition = targetLine * lineHeight;
+        
+        // Scroll the JSON editor
+        this.jsonEditor.scrollTop = Math.max(0, scrollPosition - 100); // Offset for better visibility
+        
+        // Highlight the selected object temporarily
+        this.highlightJsonObject(index);
+    }
+    
+    highlightJsonObject(index) {
+        // Create a temporary visual highlight effect
+        const originalBackground = this.jsonEditor.style.backgroundColor;
+        this.jsonEditor.style.transition = 'background-color 0.3s ease';
+        this.jsonEditor.style.backgroundColor = '#e3f2fd';
+        
+        setTimeout(() => {
+            this.jsonEditor.style.backgroundColor = originalBackground;
+        }, 1000);
     }
     
     clearSelectedBox() {
@@ -408,7 +483,8 @@ class ImageAnnotationTool {
             if (property === 'content') {
                 const boxElement = this.boundingBoxesContainer.children[this.selectedBoxIndex];
                 const label = boxElement.querySelector('.box-label');
-                label.textContent = `${this.selectedBoxIndex}`;
+                const content = value || `Box ${this.selectedBoxIndex}`;
+                label.textContent = content.length > 15 ? content.substring(0, 15) + '...' : content;
             }
         }
     }
