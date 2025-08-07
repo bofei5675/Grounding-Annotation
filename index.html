@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Annotation Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Image Annotation Tool</h1>
+            <div class="toolbar">
+                <button id="addBoxBtn" class="btn btn-primary">Add Bounding Box</button>
+                <button id="deleteBoxBtn" class="btn btn-danger">Delete Selected</button>
+                <button id="exportBtn" class="btn btn-success">Export Data</button>
+                <button id="exportImageBtn" class="btn btn-info">Export Image</button>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <!-- Left Panel - Image -->
+            <div class="left-panel">
+                <div class="image-upload-area">
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    <div id="imageDropZone" class="drop-zone">
+                        <p>Click to upload image or drag and drop</p>
+                    </div>
+                </div>
+                <div class="image-container" id="imageContainer" style="display: none;">
+                    <div class="image-wrapper">
+                        <canvas id="imageCanvas"></canvas>
+                        <div id="boundingBoxes"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Panel - JSON Editor -->
+            <div class="right-panel">
+                <div class="json-upload-area">
+                    <input type="file" id="jsonInput" accept=".json" style="display: none;">
+                    <button id="jsonUploadBtn" class="btn btn-secondary">Upload JSON File</button>
+                    <button id="createNewBtn" class="btn btn-secondary">Create New</button>
+                </div>
+                <div class="json-editor-container">
+                    <h3>JSON Data</h3>
+                    <textarea id="jsonEditor" placeholder="JSON data will appear here..."></textarea>
+                </div>
+                <div class="bbox-info">
+                    <h3>Selected Box Info</h3>
+                    <div id="selectedBoxInfo">
+                        <p>Select a bounding box to edit its properties</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+[
+  {
+    "type": "text",
+    "bbox": [
+      0.3886111080646515,
+      0.013719512149691582,
+      0.41777777671813965,
+      0.039126016199588776
+    ],
+    "interactivity": false,
+    "content": "Untitled",
+    "source": "box_ocr_content_ocr"
+  },
+  {
+    "type": "text",
+    "bbox": [
+      0.1,
+      0.2,
+      0.4,
+      0.3
+    ],
+    "interactivity": true,
+    "content": "Sample Button",
+    "source": "manual"
+  },
+  {
+    "type": "image",
+    "bbox": [
+      0.6,
+      0.1,
+      0.9,
+      0.4
+    ],
+    "interactivity": false,
+    "content": "Profile Image",
+    "source": "element_detection"
+  }
+]
