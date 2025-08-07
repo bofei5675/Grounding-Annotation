@@ -270,30 +270,42 @@ header h1 {
     border-top: 1px solid #e0e0e0;
     padding-top: 20px;
     flex-shrink: 0; /* Prevent this section from shrinking */
+    margin-top: 20px; /* Add some space from the JSON editor */
 }
 
 .bbox-info h3 {
     margin-bottom: 15px;
     color: #2c3e50;
     font-weight: 600;
+    font-size: 16px;
+    line-height: 1.2;
 }
 
 #selectedBoxInfo {
     background: #f8f9fa;
-    padding: 15px;
+    padding: 20px;
     border-radius: 6px;
     border: 1px solid #e0e0e0;
+    min-height: 60px;
+    word-wrap: break-word;
 }
 
 .property-group {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    clear: both;
+}
+
+.property-group:last-child {
+    margin-bottom: 0;
 }
 
 .property-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: 500;
     color: #555;
+    font-size: 14px;
+    line-height: 1.2;
 }
 
 .property-group input,

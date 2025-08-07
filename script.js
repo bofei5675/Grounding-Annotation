@@ -205,8 +205,7 @@ class ImageAnnotationTool {
         // Add label
         const label = document.createElement('div');
         label.className = 'box-label';
-        const content = boxData.content || `Box ${index}`;
-        label.textContent = content.length > 15 ? content.substring(0, 15) + '...' : content;
+        label.textContent = index;
         boxElement.appendChild(label);
         
         // Add resize handles
@@ -479,12 +478,9 @@ class ImageAnnotationTool {
             this.jsonData[this.selectedBoxIndex][property] = value;
             this.updateJsonEditor();
             
-            // Update label if content changed
+            // Update label if content changed (labels now only show ID, so no update needed)
             if (property === 'content') {
-                const boxElement = this.boundingBoxesContainer.children[this.selectedBoxIndex];
-                const label = boxElement.querySelector('.box-label');
-                const content = value || `Box ${this.selectedBoxIndex}`;
-                label.textContent = content.length > 15 ? content.substring(0, 15) + '...' : content;
+                // Label only shows ID now, no need to update
             }
         }
     }
